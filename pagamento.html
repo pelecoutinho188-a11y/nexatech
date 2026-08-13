@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pagamento - NexaTech</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="pagamento-page">
+
+    <header>
+        <div class="logo-area">
+            <img src="logo-nexatech.png"
+                 alt="NexaTech"
+                 class="logo-nexatech">
+        </div>
+    </header>
+
+    <nav>
+        <a href="index.html">Início</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="carrinho.html">Carrinho</a>
+        <a href="login.html">Login</a>
+        <a href="#">Contato</a>
+    </nav>
+
+    <main class="checkout">
+
+        <h1 class="checkout-titulo">Pagamento</h1>
+        <div class="titulo-linha"></div>
+
+        <div class="checkout-grid">
+
+            <!-- PAGAMENTO -->
+            <section class="checkout-card pagamento-card">
+
+                <h2>Escolha a forma de pagamento</h2>
+
+                <label class="opcao-pagamento">
+                    <input
+                        type="radio"
+                        name="pagamento"
+                        value="pix"
+                        checked
+                    >
+                    PIX
+                </label>
+
+                <label class="opcao-pagamento">
+                    <input
+                        type="radio"
+                        name="pagamento"
+                        value="credito"
+                    >
+                    Cartão de Crédito
+                </label>
+
+                <label class="opcao-pagamento">
+                    <input
+                        type="radio"
+                        name="pagamento"
+                        value="boleto"
+                    >
+                    Boleto
+                </label>
+
+                <hr>
+
+                <div id="pix-area">
+
+                    <h2>Pagamento via PIX</h2>
+
+                    <div class="qr-area">
+                        <img
+                            src="qr-pix.png"
+                            alt="QR Code PIX demonstrativo"
+                            class="pix-qr"
+                        >
+                    </div>
+
+                    <p>
+                        Escaneie o QR Code para realizar o pagamento.
+                    </p>
+
+                    <button
+                        type="button"
+                        id="confirmar-pagamento"
+                        class="botao-checkout"
+                    >
+                        ✓ Confirmar Pagamento
+                    </button>
+
+                </div>
+
+                <div id="outra-forma" class="outra-forma"></div>
+
+            </section>
+
+
+            <!-- LADO DIREITO -->
+            <div class="checkout-lateral">
+
+                <section class="checkout-card resumo-compra">
+
+                    <h2>Resumo da Compra</h2>
+
+                    <div class="resumo-linha">
+                        <span>Subtotal:</span>
+                        <strong id="subtotal">
+                            R$ 0,00
+                        </strong>
+                    </div>
+
+                    <div class="resumo-linha">
+                        <span>Frete:</span>
+                        <strong>R$ 0,00</strong>
+                    </div>
+
+                    <hr>
+
+                    <div class="resumo-linha resumo-total">
+                        <span>Total:</span>
+
+                        <strong id="total-pagamento">
+                            R$ 0,00
+                        </strong>
+                    </div>
+
+                    <button
+                        type="button"
+                        id="finalizar-compra"
+                        class="botao-checkout"
+                    >
+                        🛒 Finalizar Compra
+                    </button>
+
+                </section>
+
+
+                <section class="checkout-card info-pagamento">
+
+                    <h2>
+                        <span class="info-icone">i</span>
+                        Informações importantes
+                    </h2>
+
+                    <ul>
+                        <li>
+                            O pagamento via PIX é aprovado na hora.
+                        </li>
+
+                        <li>
+                            Após o pagamento, você receberá uma confirmação.
+                        </li>
+
+                        <li>
+                            Em caso de dúvidas, entre em contato conosco.
+                        </li>
+                    </ul>
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="js/script.js"></script>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            /* =====================================
+               CALCULAR VALOR DO CARRINHO
+            ===================================== */
+
+            const carrinho =
+                JSON.parse(localStorage.getItem("carrinho")) || [];
+
+            let total = 0;
+
+            carrinho.forEach(function (produto) {
+                total += Number(produto.preco) || 0;
+            });
+
+            const valorFormatado =
+                total.toLocaleString(
+                    "pt-BR",
+                    {
+                        style: "currency",
+                        currency: "BRL"
+                    }
+                );
+
+            document.getElementById("subtotal").textContent =
+                valorFormatado;
+
+            document.getElementById("total-pagamento").textContent =
+                valorFormatado;
+
+
+            /* =====================================
+               FORMAS DE PAGAMENTO
+            ===================================== */
+
+            const radios =
+                document.querySelectorAll(
+                    'input[name="pagamento"]'
+                );
+
+            const pixArea =
+                document.getElementById("pix-area");
+
+            const outraForma =
+                document.getElementById("outra-forma");
+
+
+            radios.forEach(function (radio) {
+
+                radio.addEventListener(
+                    "change",
+                    function () {
+
+                        if (this.value === "pix") {
+
+                            pixArea.style.display = "block";
+
+                            outraForma.innerHTML = "";
+
+                        }
+
+
+                        if (this.value === "credito") {
+
+                            pixArea.style.display = "none";
+
+                            outraForma.innerHTML = `
+                                <h2>Cartão de Crédito</h2>
+
+                                <input
+                                    type="text"
+                                    placeholder="Número do cartão"
+                                >
+
+                                <input
+                                    type="text"
+                                    placeholder="Nome no cartão"
+                                >
+
+                                <div class="cartao-linha">
+
+                                    <input
+                                        type="text"
+                                        placeholder="Validade"
+                                    >
+
+                                    <input
+                                        type="text"
+                                        placeholder="CVV"
+                                    >
+
+                                </div>
+
+                                <button
+                                    class="botao-checkout"
+                                    type="button"
+                                >
+                                    Confirmar Cartão
+                                </button>
+                            `;
+
+                        }
+
+
+                        if (this.value === "boleto") {
+
+                            pixArea.style.display = "none";
+
+                            outraForma.innerHTML = `
+                                <h2>Pagamento via Boleto</h2>
+
+                                <p>
+                                    Clique abaixo para gerar
+                                    seu boleto.
+                                </p>
+
+                                <button
+                                    class="botao-checkout"
+                                    type="button"
+                                >
+                                    Gerar Boleto
+                                </button>
+                            `;
+
+                        }
+
+                    }
+                );
+
+            });
+
+
+            /* =====================================
+               CONFIRMAR PIX
+            ===================================== */
+
+            document
+                .getElementById("confirmar-pagamento")
+                .addEventListener(
+                    "click",
+                    function () {
+
+                        alert(
+                            "Pagamento confirmado com sucesso!"
+                        );
+
+                    }
+                );
+
+
+            /* =====================================
+               FINALIZAR
+            ===================================== */
+
+            document
+                .getElementById("finalizar-compra")
+                .addEventListener(
+                    "click",
+                    function () {
+
+                        if (carrinho.length === 0) {
+
+                            alert(
+                                "Seu carrinho está vazio!"
+                            );
+
+                            return;
+
+                        }
+
+                        alert(
+                            "Compra finalizada com sucesso!"
+                        );
+
+                    }
+                );
+
+        });
+
+    </script>
+
+</body>
+</html>

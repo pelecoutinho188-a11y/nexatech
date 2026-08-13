@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho - Loja Tech</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-area">
+    <img src="logo-nexatech.png" alt="NexaTech" class="logo-nexatech">
+</div>
+    </header>
+
+    <nav>
+        <a href="index.html">Início</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="carrinho.html">Carrinho</a>
+        <a href="#">Login</a>
+        <a href="#">Contato</a>
+    </nav>
+
+    <main>
+    <h2>Meu Carrinho</h2>
+
+    <div id="lista-carrinho"></div>
+
+    <div class="resumo-carrinho">
+        <h3>Resumo da Compra</h3>
+        <p>Total: <strong id="total-carrinho">R$ 0,00</strong></p>
+        <button onclick="finalizarCompra()">Finalizar Compra</button>
+    </div>
+</main>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
